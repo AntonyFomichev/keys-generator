@@ -49,7 +49,7 @@ func printBitcoinKeys(keysPerPage int) {
 		}
 	} else {
 		fmt.Println(time.Now().UTC().Format("15:04:05") + " Nothing found..." + "\n")
-		time.Sleep(1000 * time.Millisecond)
+		time.Sleep(1200 * time.Millisecond)
 		printBitcoinKeys(keysPerPage)
 	}
 }
@@ -58,7 +58,11 @@ func checkBtcBalanceWallet(compressed string) string {
 	resp, err := http.Get("https://blockchain.info/balance?cors=true&active=" + compressed)
 
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
+	}
+
+	if resp.StatusCode == 429 {
+		panic("Too many requests")
 	}
 
 	type Data struct {
@@ -71,10 +75,6 @@ func checkBtcBalanceWallet(compressed string) string {
 
 
 	json.NewDecoder(resp.Body).Decode(&result)
-
-	if err != nil {
-		log.Fatalln(err)
-	}
 
 	for i, key := range result {
 		if key.final_balance != 0 {
