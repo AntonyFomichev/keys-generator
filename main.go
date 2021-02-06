@@ -49,7 +49,7 @@ func printBitcoinKeys(keysPerPage int) {
 		}
 	} else {
 		fmt.Println(time.Now().UTC().Format("15:04:05") + " Nothing found..." + "\n")
-		time.Sleep(1200 * time.Millisecond)
+		time.Sleep(1000 * time.Millisecond)
 		printBitcoinKeys(keysPerPage)
 	}
 }
