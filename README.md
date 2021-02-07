@@ -11,14 +11,7 @@ This repository contains the key generator for [Keys.lol](https://keys.lol)
 For generating keys, run:
 
 ```bash
-keys-generator btc <page number>
-keys-generator eth <page number>
-```
-
-For searching by private key, run:
-```bash
-keys-generator btc-search <btc private key>
-keys-generator eth-search <eth private key>
+keys-generator
 ```
 
 ## License
