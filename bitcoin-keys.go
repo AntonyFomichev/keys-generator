@@ -21,9 +21,10 @@ type key struct {
 }
 
 func generateBitcoinKeys(keysPerPage int) (keys []key) {
-	min := "90462569716653277674664832038037428010029347093027269048910283"
+	// Generate random page from 0 to hero
+	min := "0"
 	max := "904625697166532776746648320380374280100293470930272690489102837043110636675"
-	pageNumber := RandBigInt(makeBigInt(min), makeBigInt(max))
+	pageNumber := randBigInt(makeBigInt(min), makeBigInt(max))
 
 	fmt.Println("On page " + pageNumber.String() + ":")
 
