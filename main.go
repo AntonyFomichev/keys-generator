@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -22,13 +23,9 @@ func printBitcoinKeys(keysPerPage int) {
 
 	file, err := os.Create("keys.txt")
 
-	file.Truncate(0)
-
 	if err != nil {
         log.Fatal(err)
   	}
-
-	defer file.Close()
 
 	for i, key := range bitcoinKeys {
 		compressedKeys += key.compressed
@@ -45,6 +42,8 @@ func printBitcoinKeys(keysPerPage int) {
 			if key.compressed == findedBalance {
 				fmt.Println("Wallet found! " + key.private)
 				fmt.Fprintln(file, i, key)
+				time.Sleep(1000 * time.Millisecond)
+				printBitcoinKeys(keysPerPage)
 			}
 		}
 	} else {
@@ -61,9 +60,11 @@ func checkBtcBalanceWallet(compressed string) string {
 		panic(err)
 	}
 
-	if resp.StatusCode == 429 {
-		panic("Too many requests")
+	if resp.StatusCode != 200 {
+		panic(resp.Status)
 	}
+
+	fmt.Print("StatusCode: " + strconv.Itoa(resp.StatusCode) + " ")
 
 	type Data struct {
 		final_balance int

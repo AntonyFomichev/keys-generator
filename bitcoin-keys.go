@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"math/big"
-	"math/rand"
-	"strconv"
 
 	"github.com/btcsuite/btcd/btcec"
 	"github.com/btcsuite/btcd/chaincfg"
@@ -23,11 +21,13 @@ type key struct {
 }
 
 func generateBitcoinKeys(keysPerPage int) (keys []key) {
-	randNum := rand.Int()
-	pageNumber := strconv.Itoa(randNum)
-	fmt.Println("On page " + pageNumber + ":")
+	min := "90462569716653277674664832038037428010029347093027269048910283"
+	max := "904625697166532776746648320380374280100293470930272690489102837043110636675"
+	pageNumber := RandBigInt(makeBigInt(min), makeBigInt(max))
 
-	basePage := new(big.Int).Sub(makeBigInt(pageNumber), one)
+	fmt.Println("On page " + pageNumber.String() + ":")
+
+	basePage := new(big.Int).Sub(pageNumber, one)
 
 	// convert the "int" to "string" because i dont know how to create a bigInt from an "int"
 	stringInt := fmt.Sprintf("%d", keysPerPage)
