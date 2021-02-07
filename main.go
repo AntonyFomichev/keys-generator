@@ -20,7 +20,10 @@ func main() {
     log.Fatal(err)
   }
 
-	printBitcoinKeys(keysPerPage)
+	for {
+		printBitcoinKeys(keysPerPage)
+		time.Sleep(1000 * time.Millisecond)
+	}
 }
 
 func printBitcoinKeys(keysPerPage int) {
@@ -49,16 +52,11 @@ func printBitcoinKeys(keysPerPage int) {
 				}
 
 				fmt.Println("Wallet found! " + key.private)
-
 				fmt.Fprintln(file, i, key)
-				time.Sleep(1000 * time.Millisecond)
-				printBitcoinKeys(keysPerPage)
 			}
 		}
 	} else {
 		fmt.Println(time.Now().UTC().Format("15:04:05") + " Nothing found..." + "\n")
-		time.Sleep(1000 * time.Millisecond)
-		printBitcoinKeys(keysPerPage)
 	}
 }
 
