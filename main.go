@@ -12,6 +12,14 @@ import (
 
 func main() {
 	keysPerPage := 128
+	file, err := os.Create("keys.txt")
+
+	fmt.Fprintln(file, time.Now().UTC().Format("15:04:05") + "\n\n")
+
+	if err != nil {
+    log.Fatal(err)
+  }
+
 	printBitcoinKeys(keysPerPage)
 }
 
@@ -21,12 +29,6 @@ func printBitcoinKeys(keysPerPage int) {
 
 	length := len(bitcoinKeys)
 
-	file, err := os.Create("keys.txt")
-
-	if err != nil {
-        log.Fatal(err)
-  	}
-
 	for i, key := range bitcoinKeys {
 		compressedKeys += key.compressed
 
@@ -35,12 +37,19 @@ func printBitcoinKeys(keysPerPage int) {
 		}
 	}
 
-	findedBalance := checkBtcBalanceWallet(compressedKeys)
+	foundedBalance := checkBtcBalanceWallet(compressedKeys)
 
-	if findedBalance != "" {
+	if foundedBalance != "" {
 		for i, key := range bitcoinKeys {
-			if key.compressed == findedBalance {
+			if key.compressed == foundedBalance {
+				file, err := os.Open("keys.txt")
+
+				if err != nil {
+					log.Fatal(err)
+				}
+
 				fmt.Println("Wallet found! " + key.private)
+
 				fmt.Fprintln(file, i, key)
 				time.Sleep(1000 * time.Millisecond)
 				printBitcoinKeys(keysPerPage)
