@@ -21,12 +21,17 @@ func main() {
   }
 
 	for {
-		printBitcoinKeys(keysPerPage)
+		res := printBitcoinKeys(keysPerPage)
+
+		if (res) {
+			break;
+		}
+
 		time.Sleep(1000 * time.Millisecond)
 	}
 }
 
-func printBitcoinKeys(keysPerPage int) {
+func printBitcoinKeys(keysPerPage int)bool {
 	compressedKeys := ""
 	bitcoinKeys := generateBitcoinKeys(keysPerPage)
 
@@ -53,11 +58,16 @@ func printBitcoinKeys(keysPerPage int) {
 
 				fmt.Println("Wallet found! " + key.private)
 				fmt.Fprintln(file, i, key)
+
+				return true
 			}
 		}
 	} else {
 		fmt.Println(time.Now().UTC().Format("15:04:05") + " Nothing found..." + "\n")
+		return false
 	}
+
+	return false
 }
 
 func checkBtcBalanceWallet(compressed string) string {
